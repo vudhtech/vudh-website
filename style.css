@@ -20,7 +20,7 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
-  font-family: Inter, system-ui, sans-serif;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif;
   line-height: 1.5;
 }
 
@@ -37,7 +37,8 @@ a {
   z-index: 10;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
+  gap: 42px;
   padding: 24px 6vw;
   background: rgba(5,7,8,.72);
   backdrop-filter: blur(16px);
@@ -45,28 +46,32 @@ a {
 }
 
 .logo {
+  color: var(--text);
   font-size: 1.35rem;
   font-weight: 800;
-  letter-spacing: .16em;
+  letter-spacing: .12em;
+  transition: color .2s ease;
 }
 
-.logo span {
+.logo:hover {
   color: var(--cyan);
 }
 
 nav {
   display: flex;
+  align-items: center;
   gap: 28px;
 }
 
 nav a {
   color: var(--muted);
   font-size: .9rem;
+  font-weight: 500;
   transition: color .2s ease;
 }
 
 nav a:hover {
-  color: var(--text);
+  color: var(--cyan);
 }
 
 .hero {
@@ -146,10 +151,10 @@ h1 span {
 }
 
 .hero-buttons a {
-  width: fit-content;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  min-width: 125px;
   padding: 14px 22px;
   border: 1px solid var(--cyan);
   color: var(--cyan);
@@ -297,6 +302,7 @@ footer {
 
 .auth-card input:focus {
   border-color: var(--cyan);
+  box-shadow: 0 0 0 3px rgba(0,229,255,.08);
 }
 
 .auth-card button {
@@ -330,7 +336,12 @@ footer {
 
 @media (max-width: 600px) {
   .nav {
+    gap: 22px;
     padding: 20px 5vw;
+  }
+
+  .logo {
+    font-size: 1.15rem;
   }
 
   nav {
@@ -351,6 +362,7 @@ footer {
   }
 
   .hero-buttons a {
+    min-width: 115px;
     padding: 13px 18px;
   }
 
