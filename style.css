@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
 :root {
   --bg: #050708;
@@ -6,6 +6,7 @@
   --muted: #9aa9aa;
   --cyan: #00e5ff;
   --line: rgba(255,255,255,.11);
+  --surface: #0d1113;
 }
 
 * {
@@ -22,11 +23,17 @@ body {
   color: var(--text);
   font-family: Inter, -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif;
   line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
 }
 
 a {
   color: inherit;
   text-decoration: none;
+}
+
+::selection {
+  background: var(--cyan);
+  color: #001014;
 }
 
 .nav {
@@ -40,8 +47,7 @@ a {
   justify-content: flex-start;
   gap: 42px;
   padding: 24px 6vw;
-  background: rgba(5,7,8,.72);
-  backdrop-filter: blur(16px);
+  background: rgba(5,7,8,.94);
   border-bottom: 1px solid var(--line);
 }
 
@@ -64,14 +70,30 @@ nav {
 }
 
 nav a {
+  position: relative;
   color: var(--muted);
   font-size: .9rem;
   font-weight: 500;
   transition: color .2s ease;
 }
 
+nav a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 0;
+  height: 1px;
+  background: var(--cyan);
+  transition: width .2s ease;
+}
+
 nav a:hover {
-  color: var(--cyan);
+  color: var(--text);
+}
+
+nav a:hover::after {
+  width: 100%;
 }
 
 .hero {
@@ -86,12 +108,12 @@ nav a:hover {
 
 .glow {
   position: absolute;
-  width: 520px;
-  height: 520px;
-  right: -180px;
-  top: 100px;
+  width: 560px;
+  height: 560px;
+  right: -200px;
+  top: 80px;
   background: var(--cyan);
-  opacity: .12;
+  opacity: .13;
   filter: blur(130px);
   border-radius: 50%;
   pointer-events: none;
@@ -111,6 +133,7 @@ h1 {
   font-size: clamp(4rem, 10vw, 8.5rem);
   line-height: .9;
   letter-spacing: -.075em;
+  font-weight: 800;
 }
 
 h1 span {
@@ -125,19 +148,24 @@ h1 span {
   font-size: 1.1rem;
 }
 
-.button {
+.button,
+.hero-buttons a {
   width: fit-content;
   display: inline-flex;
   gap: 28px;
   align-items: center;
-  padding: 14px 18px;
+  justify-content: center;
+  min-width: 125px;
+  padding: 14px 22px;
   border: 1px solid var(--cyan);
   color: var(--cyan);
   font-weight: 600;
+  font: inherit;
   transition: .2s ease;
 }
 
-.button:hover {
+.button:hover,
+.hero-buttons a:hover {
   background: var(--cyan);
   color: #001014;
   transform: translateY(-2px);
@@ -150,24 +178,6 @@ h1 span {
   flex-wrap: wrap;
 }
 
-.hero-buttons a {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 125px;
-  padding: 14px 22px;
-  border: 1px solid var(--cyan);
-  color: var(--cyan);
-  font-weight: 600;
-  transition: .2s ease;
-}
-
-.hero-buttons a:hover {
-  background: var(--cyan);
-  color: #001014;
-  transform: translateY(-2px);
-}
-
 .hero-buttons a:last-child {
   border-color: var(--line);
   color: var(--text);
@@ -176,6 +186,7 @@ h1 span {
 .hero-buttons a:last-child:hover {
   border-color: var(--cyan);
   color: #001014;
+  background: var(--cyan);
 }
 
 .section {
@@ -189,6 +200,7 @@ h1 span {
   margin: 0;
   font-size: clamp(2.4rem, 5vw, 4.5rem);
   letter-spacing: -.05em;
+  font-weight: 800;
 }
 
 .section-copy {
@@ -201,16 +213,17 @@ h1 span {
 .card {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   gap: 30px;
   margin-top: 35px;
   padding: 35px;
   border: 1px solid var(--line);
-  background: rgba(255,255,255,.025);
+  background: var(--surface);
   transition: border-color .2s ease, transform .2s ease;
 }
 
 .card:hover {
-  border-color: rgba(0,229,255,.55);
+  border-color: var(--cyan);
   transform: translateY(-4px);
 }
 
@@ -233,6 +246,11 @@ h1 span {
 .card-arrow {
   color: var(--cyan);
   font-size: 1.8rem;
+  transition: transform .2s ease;
+}
+
+.card:hover .card-arrow {
+  transform: translateX(6px);
 }
 
 .contact a {
@@ -263,7 +281,7 @@ footer {
   width: min(100%, 480px);
   padding: 40px;
   border: 1px solid var(--line);
-  background: rgba(255,255,255,.025);
+  background: var(--surface);
 }
 
 .auth-card h1 {
@@ -295,14 +313,14 @@ footer {
   padding: 0 14px;
   border: 1px solid var(--line);
   outline: none;
-  background: rgba(255,255,255,.025);
+  background: transparent;
   color: var(--text);
   font: inherit;
+  transition: border-color .2s ease;
 }
 
 .auth-card input:focus {
   border-color: var(--cyan);
-  box-shadow: 0 0 0 3px rgba(0,229,255,.08);
 }
 
 .auth-card button {
@@ -372,6 +390,8 @@ footer {
 
   .card {
     padding: 24px;
+    flex-direction: column;
+    align-items: flex-start;
   }
 
   footer {
