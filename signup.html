@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Sign up — VUDH</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="navbar">
+<a href="index.html" class="logo">VUDH</a>
+<nav>
+<a href="signin.html">Sign in</a>
+</nav>
+</header>
+
+<main class="auth-page">
+<section class="auth-card">
+<h1>Create your VUDH account</h1>
+<p>Join VUDH and get started.</p>
+
+<form id="signup-form">
+<label for="username">Username</label>
+<input id="username" name="username" type="text" autocomplete="username" required>
+
+<label for="email">Email</label>
+<input id="email" name="email" type="email" autocomplete="email" required>
+
+<label for="password">Password</label>
+<input id="password" name="password" type="password" autocomplete="new-password" required>
+
+<button type="submit">Sign up</button>
+<p id="message"></p>
+</form>
+
+<p>Already have an account? <a href="signin.html">Sign in</a></p>
+</section>
+</main>
+
+<script>
+const API_URL = "https://api.vudh.dev";
+
+document.getElementById("signup-form").addEventListener("submit", async event => {
+  event.preventDefault();
+
+  const message = document.getElementById("message");
+
+  const body = {
+    username: document.getElementById("username").value,
+    email: document.getElementById("email").value,
+    password: document.getElementById("password").value
+  };
+
+  try {
+    const response = await fetch(`${API_URL}/v1/auth/register`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      credentials: "include",
+      body: JSON.stringify(body)
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      message.textContent = data.error || "Something went wrong.";
+      return;
+    }
+
+    message.textContent = "Account created. Check your email to verify it.";
+    event.target.reset();
+  } catch {
+    message.textContent = "Unable to connect to VUDH.";
+  }
+});
+</script>
+</body>
+</html>
