@@ -7,8 +7,8 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header class="navbar">
-<a href="index.html" class="logo">VUDH</a>
+<header class="nav">
+<a href="index.html" class="logo">vudh</a>
 <nav>
 <a href="signup.html">Sign up</a>
 </nav>
@@ -34,40 +34,6 @@
 </section>
 </main>
 
-<script>
-const API_URL = "https://api.vudh.dev";
-
-document.getElementById("signin-form").addEventListener("submit", async event => {
-  event.preventDefault();
-
-  const message = document.getElementById("message");
-
-  try {
-    const response = await fetch(`${API_URL}/v1/auth/login`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      credentials: "include",
-      body: JSON.stringify({
-        identifier: document.getElementById("identifier").value,
-        password: document.getElementById("password").value
-      })
-    });
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      message.textContent = data.error || "Something went wrong.";
-      return;
-    }
-
-    window.location.href = "account.html";
-  } catch {
-    message.textContent = "Unable to connect to VUDH.";
-  }
-});
-</script>
 <script src="auth.js"></script>
 </body>
 </html>
