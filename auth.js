@@ -97,9 +97,9 @@ async function loadAccount() {
 }
 
 async function handleSignout() {
-  const message = document.getElementById("message");
+  const signout = document.getElementById("signout");
 
-  if (!message) return;
+  if (!signout) return;
 
   try {
     await api("/v1/auth/logout", {
