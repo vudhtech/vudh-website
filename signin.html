@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Sign in — VUDH</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="navbar">
+<a href="index.html" class="logo">VUDH</a>
+<nav>
+<a href="signup.html">Sign up</a>
+</nav>
+</header>
+
+<main class="auth-page">
+<section class="auth-card">
+<h1>Sign in to VUDH</h1>
+<p>Welcome back.</p>
+
+<form id="signin-form">
+<label for="identifier">Username or email</label>
+<input id="identifier" type="text" autocomplete="username" required>
+
+<label for="password">Password</label>
+<input id="password" type="password" autocomplete="current-password" required>
+
+<button type="submit">Sign in</button>
+<p id="message"></p>
+</form>
+
+<p>Don't have an account? <a href="signup.html">Sign up</a></p>
+</section>
+</main>
+
+<script>
+const API_URL = "https://api.vudh.dev";
+
+document.getElementById("signin-form").addEventListener("submit", async event => {
+  event.preventDefault();
+
+  const message = document.getElementById("message");
+
+  try {
+    const response = await fetch(`${API_URL}/v1/auth/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      credentials: "include",
+      body: JSON.stringify({
+        identifier: document.getElementById("identifier").value,
+        password: document.getElementById("password").value
+      })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      message.textContent = data.error || "Something went wrong.";
+      return;
+    }
+
+    window.location.href = "account.html";
+  } catch {
+    message.textContent = "Unable to connect to VUDH.";
+  }
+});
+</script>
+</body>
+</html>
