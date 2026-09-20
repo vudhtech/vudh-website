@@ -63,14 +63,30 @@ nav {
 }
 
 nav a {
+  position: relative;
   color: var(--muted);
   font-size: .9rem;
   font-weight: 500;
   transition: color .2s ease;
 }
 
+nav a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 0;
+  height: 1px;
+  background: var(--cyan);
+  transition: width .25s ease;
+}
+
 nav a:hover {
-  color: var(--cyan);
+  color: var(--text);
+}
+
+nav a:hover::after {
+  width: 100%;
 }
 
 .hero {
@@ -94,6 +110,12 @@ nav a:hover {
   filter: blur(130px);
   border-radius: 50%;
   pointer-events: none;
+  animation: pulse 6s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: .12; }
+  50% { opacity: .2; }
 }
 
 .eyebrow {
@@ -177,6 +199,18 @@ h1 span {
   color: #001014;
 }
 
+.badge-soon {
+  display: inline-block;
+  padding: 4px 10px;
+  border: 1px solid var(--cyan);
+  color: var(--cyan);
+  font-size: .65rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  border-radius: 100px;
+}
+
 .section {
   max-width: 1100px;
   margin: 0 auto;
@@ -188,6 +222,15 @@ h1 span {
   margin: 0;
   font-size: clamp(2.4rem, 5vw, 4.5rem);
   letter-spacing: -.05em;
+}
+
+.section h2::before {
+  content: '';
+  display: block;
+  width: 40px;
+  height: 3px;
+  background: var(--cyan);
+  margin-bottom: 20px;
 }
 
 .section-copy {
@@ -206,6 +249,7 @@ h1 span {
   border: 1px solid var(--line);
   background: rgba(255,255,255,.025);
   transition: border-color .2s ease, transform .2s ease;
+  cursor: pointer;
 }
 
 .card:hover {
@@ -220,6 +264,24 @@ h1 span {
   letter-spacing: .16em;
 }
 
+.status::before {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-right: 6px;
+  background: var(--cyan);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--cyan);
+}
+
+.card-index {
+  color: var(--muted);
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+}
+
 .card h2 {
   margin-top: 18px;
   font-size: 2rem;
@@ -230,8 +292,14 @@ h1 span {
 }
 
 .card-arrow {
+  display: inline-block;
   color: var(--cyan);
   font-size: 1.8rem;
+  transition: transform .2s ease;
+}
+
+.card:hover .card-arrow {
+  transform: translateX(6px);
 }
 
 .contact a {
@@ -248,6 +316,15 @@ footer {
   border-top: 1px solid var(--line);
   color: var(--muted);
   font-size: .75rem;
+}
+
+footer a {
+  position: relative;
+  transition: color .2s ease;
+}
+
+footer a:hover {
+  color: var(--text);
 }
 
 .auth-page {
