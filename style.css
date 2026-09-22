@@ -43,7 +43,7 @@ a{color:inherit; text-decoration:none;}
   display:grid;
   grid-template-columns:1.3fr 1fr;
   gap:6vw;
-  padding:12vh 6vw;
+  padding:9vh 6vw 6vh;
   max-width:1200px;
   align-items:start;
 }
@@ -81,7 +81,7 @@ a{color:inherit; text-decoration:none;}
 .spotlight{
   background:var(--ink);
   color:var(--paper);
-  padding:10vh 6vw;
+  padding:6vh 6vw;
 }
 .spotlight .eyebrow{
   color:var(--accent);
@@ -100,7 +100,7 @@ a{color:inherit; text-decoration:none;}
 }
 
 .way{
-  padding:10vh 6vw;
+  padding:6vh 6vw;
   max-width:1200px;
 }
 .way h2{
@@ -125,7 +125,7 @@ a{color:inherit; text-decoration:none;}
 }
 
 .talk{
-  padding:10vh 6vw 14vh;
+  padding:6vh 6vw 10vh;
   max-width:1200px;
 }
 .talk h2{
