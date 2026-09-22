@@ -1,56 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VUDH</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>vudh</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header class="navbar">
-    <a href="index.html" class="logo">vudh</a>
 
 <header class="nav">
-  <a href="index.html" class="logo">vudh</a>
-
+  <a href="#" class="logo">vudh</a>
   <nav>
-    <a href="#about">About</a>
-    <a href="#products">Products</a>
-    <a href="#contact">Contact</a>
+    <a href="#build">what we're building</a>
+    <a href="#way">how we work</a>
+    <a href="#talk">talk to us</a>
   </nav>
 </header>
 
-  <main>
-    <section class="hero">
-      <h1>Technology, <br><span>made</span> simple.</h1>
-      <p>VUDH builds technology designed to feel simple, powerful, and useful.</p>
+<main>
 
+  <section class="hero">
+    <div class="hero-left">
+      <h1>we don't ship platforms.<br>we ship answers.</h1>
+    </div>
+    <div class="hero-right">
+      <p>vudh is a small studio. every product exists because something annoyed us enough to fix it. no dashboards you'll never open, no accounts you didn't ask for.</p>
       <div class="hero-buttons">
-        <a href="signup.html">Sign Up</a>
-        <a href="signin.html">Sign In</a>
+        <a href="signup.html" class="btn btn-primary">sign up</a>
+        <a href="signin.html" class="btn btn-ghost">sign in</a>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <section id="about" class="section">
-      <h2>About</h2>
-      <p>VUDH is building technology with a focus on simplicity and innovation.</p>
-    </section>
+  <section id="build" class="spotlight">
+    <span class="eyebrow">right now</span>
+    <h2>the first thing is still taking shape.</h2>
+    <p>we're not putting a name on it until it's real. when it ships, it'll show up here first — no roadmap, no hype cycle.</p>
+  </section>
 
-    <section id="products" class="section">
-      <h2>Products</h2>
-      <p>Something is being built.</p>
-      <span>Coming soon.</span>
-    </section>
+  <section id="way" class="way">
+    <h2>how we work</h2>
+    <ul class="principles">
+      <li>
+        <p class="principle-text">one problem per product. if it needs a second one, it's a second product.</p>
+      </li>
+      <li>
+        <p class="principle-text">no feature ships to make a changelog longer.</p>
+      </li>
+      <li>
+        <p class="principle-text">if we wouldn't use it ourselves, it doesn't go out.</p>
+      </li>
+    </ul>
+  </section>
 
-    <section id="contact" class="section">
-      <h2>Contact</h2>
-      <p>Have a question?</p>
-      <a href="mailto:vudh.tech@gmail.com">vudh.tech@gmail.com</a>
-    </section>
-  </main>
+  <section id="talk" class="talk">
+    <h2>got something to say?</h2>
+    <a href="mailto:vudh.tech@gmail.com" class="talk-link">vudh.tech@gmail.com</a>
+  </section>
 
-  <footer>
-    <p>© 2026 VUDH</p>
-  </footer>
+</main>
+
+<footer>
+  <p>&copy; 2026 vudh</p>
+</footer>
+
 </body>
 </html>
