@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>vudh connect</title>
+  <meta name="description" content="A tiny connection diagnostic tool by vudh.">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <main class="app">
+    <header>
+      <div class="brand">vudh</div>
+      <div class="muted">connect</div>
+    </header>
+
+    <section class="hero">
+      <div id="statusDot" class="dot"></div>
+      <div>
+        <div id="status" class="status">ready</div>
+        <div id="statusText" class="muted">check your connection</div>
+      </div>
+    </section>
+
+    <section class="metrics" aria-live="polite">
+      <div><span>latency</span><strong id="latency">—</strong></div>
+      <div><span>jitter</span><strong id="jitter">—</strong></div>
+      <div><span>packet loss</span><strong id="loss">—</strong></div>
+    </section>
+
+    <button id="test" type="button">test connection</button>
+    <p id="detail" class="detail"></p>
+  </main>
+  <script src="/app.js"></script>
+</body>
+</html>
