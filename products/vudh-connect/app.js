@@ -6,6 +6,8 @@ const testButton = document.querySelector("#test");
 
 const endpoint = "./functions/api/ping.js";
 
+let boosted = false;
+
 function setStatus(text) {
   statusEl.textContent = text;
 }
@@ -18,66 +20,114 @@ async function ping() {
       cache: "no-store"
     });
 
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status}`);
-    }
+    if (!response.ok) throw new Error();
 
     await response.text();
-
     return performance.now() - start;
   } catch {
     return null;
   }
 }
 
-async function testConnection() {
-  testButton.disabled = true;
-  setStatus("testing...");
-  latencyEl.textContent = "—";
-  jitterEl.textContent = "—";
-  lossEl.textContent = "—";
-
+async function measure(count = 8) {
   const results = [];
 
-  for (let i = 0; i < 8; i++) {
+  for (let i = 0; i < count; i++) {
     const result = await ping();
 
     if (result !== null) {
       results.push(result);
     }
 
-    await new Promise(resolve => setTimeout(resolve, 150));
+    await new Promise(resolve => setTimeout(resolve, 100));
   }
 
-  const packetLoss = ((8 - results.length) / 8) * 100;
+  const packetLoss = ((count - results.length) / count) * 100;
 
-  lossEl.textContent = `${packetLoss}%`;
-
-  if (results.length === 0) {
-    setStatus("offline?");
-    testButton.disabled = false;
-    return;
+  if (!results.length) {
+    return {
+      latency: null,
+      jitter: null,
+      loss: 100
+    };
   }
 
-  const average =
-    results.reduce((sum, value) => sum + value, 0) / results.length;
+  const latency =
+    results.reduce((sum, value) => sum + value, 0) /
+    results.length;
 
   const jitter =
     results.length > 1
-      ? results
-          .slice(1)
-          .reduce((sum, value, i) => {
-            return sum + Math.abs(value - results[i]);
-          }, 0) / (results.length - 1)
+      ? results.slice(1).reduce(
+          (sum, value, i) =>
+            sum + Math.abs(value - results[i]),
+          0
+        ) / (results.length - 1)
       : 0;
 
-  latencyEl.textContent = `${Math.round(average)} ms`;
-  jitterEl.textContent = `${Math.round(jitter)} ms`;
+  return {
+    latency,
+    jitter,
+    loss: packetLoss
+  };
+}
 
-  if (packetLoss === 0) {
-    setStatus("online");
+function display(result) {
+  latencyEl.textContent =
+    result.latency === null
+      ? "—"
+      : `${Math.round(result.latency)} ms`;
+
+  jitterEl.textContent =
+    result.jitter === null
+      ? "—"
+      : `${Math.round(result.jitter)} ms`;
+
+  lossEl.textContent = `${result.loss}%`;
+}
+
+async function boostConnection() {
+  testButton.disabled = true;
+  setStatus("boosting...");
+
+  // Warm up the connection.
+  const warmups = [];
+
+  for (let i = 0; i < 4; i++) {
+    warmups.push(ping());
+  }
+
+  await Promise.allSettled(warmups);
+
+  // Give the connection a moment to settle.
+  await new Promise(resolve => setTimeout(resolve, 250));
+
+  boosted = true;
+
+  setStatus("boosted");
+
+  const result = await measure();
+  display(result);
+
+  testButton.disabled = false;
+}
+
+async function testConnection() {
+  testButton.disabled = true;
+
+  if (!boosted) {
+    setStatus("testing...");
+
+    const result = await measure();
+    display(result);
+
+    if (result.loss === 100) {
+      setStatus("offline?");
+    } else {
+      setStatus("online");
+    }
   } else {
-    setStatus("unstable");
+    await boostConnection();
   }
 
   testButton.disabled = false;
