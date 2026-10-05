@@ -1,0 +1,18 @@
+*{box-sizing:border-box}
+:root{font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#111;background:#f6f6f3}
+body{margin:0;min-height:100vh;display:grid;place-items:center;padding:24px}
+.app{width:min(520px,100%);background:#fff;border:1px solid #dddcd6;border-radius:22px;padding:28px;box-shadow:0 12px 40px #0000000d}
+header{display:flex;align-items:baseline;gap:8px;margin-bottom:48px}
+.brand{font-size:24px;font-weight:750;letter-spacing:-.04em}
+.muted{color:#777}
+.hero{display:flex;align-items:center;gap:14px;margin-bottom:28px}
+.dot{width:12px;height:12px;border-radius:50%;background:#aaa}
+.dot.good{background:#25a55b}.dot.bad{background:#d94b4b}.dot.busy{background:#d69a27}
+.status{font-size:28px;font-weight:700;letter-spacing:-.03em}
+.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:18px}
+.metrics div{background:#f6f6f3;border-radius:15px;padding:16px}
+.metrics span{display:block;color:#777;font-size:13px;margin-bottom:8px}
+.metrics strong{font-size:23px}
+button{width:100%;border:0;border-radius:14px;padding:15px 18px;background:#111;color:#fff;font-size:16px;font-weight:650;cursor:pointer}
+button:disabled{opacity:.5;cursor:wait}
+.detail{min-height:22px;color:#777;font-size:13px;line-height:1.45;margin:14px 2px 0}
