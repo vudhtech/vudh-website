@@ -1,24 +1,30 @@
 const statusEl = document.querySelector("#status");
+const statusTextEl = document.querySelector("#statusText");
 const latencyEl = document.querySelector("#latency");
 const jitterEl = document.querySelector("#jitter");
 const lossEl = document.querySelector("#loss");
 const testButton = document.querySelector("#test");
+const detailEl = document.querySelector("#detail");
 
 const endpoint = "./functions/api/ping.js";
 
 let boosted = false;
 
-function setStatus(text) {
-  statusEl.textContent = text;
+const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+function setStatus(status, text) {
+  statusEl.textContent = status;
+  statusTextEl.textContent = text;
 }
 
 async function ping() {
   const start = performance.now();
 
   try {
-    const response = await fetch(`${endpoint}?t=${Date.now()}`, {
-      cache: "no-store"
-    });
+    const response = await fetch(
+      endpoint + "?t=" + Date.now() + "-" + Math.random(),
+      { cache: "no-store" }
+    );
 
     if (!response.ok) throw new Error();
 
@@ -29,22 +35,20 @@ async function ping() {
   }
 }
 
-async function measure(count = 8) {
-  const results = [];
+async function measure(count = 10) {
+  const samples = [];
 
   for (let i = 0; i < count; i++) {
-    const result = await ping();
+    const value = await ping();
 
-    if (result !== null) {
-      results.push(result);
+    if (value !== null) {
+      samples.push(value);
     }
 
-    await new Promise(resolve => setTimeout(resolve, 100));
+    await sleep(75);
   }
 
-  const packetLoss = ((count - results.length) / count) * 100;
-
-  if (!results.length) {
+  if (!samples.length) {
     return {
       latency: null,
       jitter: null,
@@ -53,84 +57,98 @@ async function measure(count = 8) {
   }
 
   const latency =
-    results.reduce((sum, value) => sum + value, 0) /
-    results.length;
+    samples.reduce((sum, value) => sum + value, 0) /
+    samples.length;
 
   const jitter =
-    results.length > 1
-      ? results.slice(1).reduce(
+    samples.length > 1
+      ? samples.slice(1).reduce(
           (sum, value, i) =>
-            sum + Math.abs(value - results[i]),
+            sum + Math.abs(value - samples[i]),
           0
-        ) / (results.length - 1)
+        ) / (samples.length - 1)
       : 0;
 
   return {
     latency,
     jitter,
-    loss: packetLoss
+    loss: ((count - samples.length) / count) * 100
   };
 }
 
 function display(result) {
   latencyEl.textContent =
-    result.latency === null
+    result.latency == null
       ? "—"
-      : `${Math.round(result.latency)} ms`;
+      : Math.round(result.latency) + " ms";
 
   jitterEl.textContent =
-    result.jitter === null
+    result.jitter == null
       ? "—"
-      : `${Math.round(result.jitter)} ms`;
+      : Math.round(result.jitter) + " ms";
 
-  lossEl.textContent = `${result.loss}%`;
+  lossEl.textContent =
+    (Number.isInteger(result.loss)
+      ? result.loss
+      : result.loss.toFixed(1)) + "%";
 }
 
 async function boostConnection() {
   testButton.disabled = true;
-  setStatus("boosting...");
 
-  // Warm up the connection.
-  const warmups = [];
+  setStatus("optimizing...", "warming the vudh connection");
+  detailEl.textContent = "opening parallel edge requests";
 
-  for (let i = 0; i < 4; i++) {
-    warmups.push(ping());
-  }
+  await Promise.allSettled(
+    Array.from({ length: 8 }, ping)
+  );
 
-  await Promise.allSettled(warmups);
-
-  // Give the connection a moment to settle.
-  await new Promise(resolve => setTimeout(resolve, 250));
+  await sleep(150);
 
   boosted = true;
 
-  setStatus("boosted");
+  setStatus("boosted", "vudh connection is warm");
+  detailEl.textContent =
+    "browser traffic can reuse the warmed connection";
 
-  const result = await measure();
-  display(result);
+  display(await measure());
 
   testButton.disabled = false;
+  testButton.textContent = "re-optimize";
 }
 
 async function testConnection() {
   testButton.disabled = true;
 
   if (!boosted) {
-    setStatus("testing...");
+    setStatus("testing...", "measuring your connection");
+    detailEl.textContent = "";
 
     const result = await measure();
+
     display(result);
 
     if (result.loss === 100) {
-      setStatus("offline?");
+      setStatus(
+        "offline?",
+        "vudh could not reach its edge"
+      );
     } else {
-      setStatus("online");
+      setStatus(
+        "online",
+        "connection is reachable"
+      );
     }
-  } else {
-    await boostConnection();
+
+    testButton.textContent = "boost connection";
+    testButton.disabled = false;
+    return;
   }
 
-  testButton.disabled = false;
+  await boostConnection();
 }
 
-testButton.addEventListener("click", testConnection);
+testButton.addEventListener(
+  "click",
+  testConnection
+);
